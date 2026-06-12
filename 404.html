@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Not Found</title>
+  <meta name="robots" content="noindex">
+  <style>html,body{height:100%;margin:0;font-family:Helvetica,Arial,sans-serif;background:#fff;color:#222;display:flex;align-items:center;justify-content:center}</style>
+</head>
+<body>
+  <div>
+    <h2>Page not found — loading application...</h2>
+    <p>If you are not redirected automatically, <a id="link" href="#">click here</a>.</p>
+  </div>
+
+  <script>
+    (function() {
+      try {
+        // Compute repo base (e.g. /booksrilankataxi_temp/)
+        var parts = location.pathname.split('/');
+        var base = '/';
+        if (parts.length > 1 && parts[1]) { base += parts[1] + '/'; }
+        var indexUrl = base + 'index.html';
+
+        // Fetch the real index.html and inject it so Angular can route the current URL
+        fetch(indexUrl).then(function(resp) {
+          return resp.text();
+        }).then(function(html) {
+          document.open();
+          document.write(html);
+          document.close();
+
+          // Restore the original URL in the address bar so Angular can read it
+          history.replaceState({}, '', location.pathname + location.search + location.hash);
+        }).catch(function() {
+          // Fallback: redirect to base
+          location.replace(indexUrl);
+        });
+      } catch (e) {
+        // If anything fails, redirect to the app root
+        location.replace('/');
+      }
+    })();
+  </script>
+</body>
+</html>
